@@ -1,0 +1,59 @@
+//RBG的三个引脚
+int redPin = 9;
+int greenPin = 10;
+int bluePin = 11;
+
+//记录数据的字符串
+String comdata = "f00";
+
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(redPin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
+  pinMode(bluePin, OUTPUT);
+
+}
+
+void loop()
+{
+  if (Serial.available() > 0)
+  {
+    comdata += char(Serial.read());
+    delay(2);
+  } else
+  {
+    if (comdata.length() > 0)
+    {
+      setColor(hex(comdata.charAt(0)),hex(comdata.charAt(1)),hex(comdata.charAt(2)));
+      comdata = "";
+    }
+  }
+
+}
+
+//字符转换成相应的数字
+int hex(char c)
+{
+  if(c == 'f')
+    return 16*15+15;
+  else if(c == 'e')
+    return 16*14+14;
+    else if(c == 'd')
+    return 16*13+13;S
+    else if(c == 'c')
+    return 16*12+12;
+    else if(c == 'b')
+    return 16*11+11;
+    else if(c == 'a')
+    return 16*10+10;
+    else
+    return 16*(c-'0')+(c-'0');
+}
+
+void setColor(int red, int green, int blue)
+{
+  analogWrite(redPin,red);
+  analogWrite(greenPin,green);
+  analogWrite(bluePin,blue);
+}
